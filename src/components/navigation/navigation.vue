@@ -5,14 +5,11 @@
 			<!-- Path Navigation -->
 			<div class="nav-menu__container">
 				<ul class="nav-menu">
-					<a class="nal-links mr-4" href="/home">
-						Home
+					<a class="nal-links mr-6" href="/home">
+						Products
 					</a>
 					<a class="nal-links mr-4" href="/shopping">
-						Shopping
-					</a>
-					<a class="nal-links mr-4" href="/customize">
-						Customize
+						User
 					</a>
 				</ul>
 			</div>
