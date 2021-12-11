@@ -1,0 +1,15 @@
+{
+	"productName": "Kanagawa Deskmat",
+	"productCategory": "Accessories",
+	"productPricePerUnit": 1200,
+	"productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+	"quantityOnHand": 40,
+	"option": [
+        {
+            "option_name": "Variant",
+            "option_list": ["Mint","Charcaol","Mizu"],
+            "option_price_added": [0,0,0]
+        }
+    ],
+	"tags": ["Deskmat"]
+}

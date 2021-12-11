@@ -1,0 +1,23 @@
+{
+    "productName": "Keychron K8",
+    "productPrice": 6590,
+    "productQuantity": 40,
+    "productOptionDetail": [
+        {
+            "option_name": "Color",
+            "option_select": "Black",
+            "option_price_added": 200
+        },
+        {
+            "option_name": "Switch",
+            "option_select": "Gateron Phantom Red",
+            "option_price_added": 0
+        },
+        {
+            "option_name": "Keycap Language",
+            "option_select": "Thai",
+            "option_price_added": 0
+        }
+    ],
+    "totalPrice": 6790
+}

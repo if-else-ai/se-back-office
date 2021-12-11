@@ -1,0 +1,13 @@
+{
+    "productName": "Gazzew Boba U4t",
+    "productPrice": 40,
+    "productQuantity": 70,
+    "productOptionDetail": [
+        {
+            "option_name": "Lube",
+            "option_select": "Lube",
+            "option_price_added": 2
+        }
+    ],
+    "totalPrice": 2940
+}

@@ -1,0 +1,159 @@
+{
+	"products": [
+		{
+			"productID": "ax67s45d6uaxv92323698",
+			"productName": "Keychron K8",
+			"productCategory": "Keyboard",
+			"productPricePerUnit": 6590,
+			"productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"quantityOnHand": 40,
+			"option": [
+				{
+					"option_name": "Color",
+					"option_list": ["white", "black"],
+					"option_price_added": [200, -200]
+				},
+				{
+					"option_name": "Switch",
+					"option_list": [
+						"Gateron Phantom Red",
+						"Gateron Phantom Brown",
+						"Gateron Phantom Blue"
+					],
+					"option_price_added": [100, 200, 0]
+				},
+				{
+					"option_name": "Keycap Language",
+					"option_list": ["Thai", "English"],
+					"option_price_added": [100, 200, 0]
+				}
+			],
+			"tags": ["75%", "RGB", "Hot-Swappable"],
+			"product_image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		},
+		{
+			"productID": "ax67s45d6uaxv92323698",
+			"productName": "Keychron K8",
+			"productCategory": "Keyboard",
+			"productPricePerUnit": 6590,
+			"productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"quantityOnHand": 40,
+			"option": [
+				{
+					"option_name": "Color",
+					"option_list": ["white", "black"],
+					"option_price_added": [200, -200]
+				},
+				{
+					"option_name": "Switch",
+					"option_list": [
+						"Gateron Phantom Red",
+						"Gateron Phantom Brown",
+						"Gateron Phantom Blue"
+					],
+					"option_price_added": [100, 200, 0]
+				},
+				{
+					"option_name": "Keycap Language",
+					"option_list": ["Thai", "English"],
+					"option_price_added": [100, 200, 0]
+				}
+			],
+			"tags": ["75%", "RGB", "Hot-Swappable"],
+			"product_image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		},
+		{
+			"productID": "ax67s45d6uaxv92323698",
+			"productName": "Keychron K8",
+			"productCategory": "Keyboard",
+			"productPricePerUnit": 6590,
+			"productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"quantityOnHand": 40,
+			"option": [
+				{
+					"option_name": "Color",
+					"option_list": ["white", "black"],
+					"option_price_added": [200, -200]
+				},
+				{
+					"option_name": "Switch",
+					"option_list": [
+						"Gateron Phantom Red",
+						"Gateron Phantom Brown",
+						"Gateron Phantom Blue"
+					],
+					"option_price_added": [100, 200, 0]
+				},
+				{
+					"option_name": "Keycap Language",
+					"option_list": ["Thai", "English"],
+					"option_price_added": [100, 200, 0]
+				}
+			],
+			"tags": ["75%", "RGB", "Hot-Swappable"],
+			"product_image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		},
+		{
+			"productID": "ax67s45d6uaxv92323698",
+			"productName": "Keychron K8",
+			"productCategory": "Keyboard",
+			"productPricePerUnit": 6590,
+			"productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"quantityOnHand": 40,
+			"option": [
+				{
+					"option_name": "Color",
+					"option_list": ["white", "black"],
+					"option_price_added": [200, -200]
+				},
+				{
+					"option_name": "Switch",
+					"option_list": [
+						"Gateron Phantom Red",
+						"Gateron Phantom Brown",
+						"Gateron Phantom Blue"
+					],
+					"option_price_added": [100, 200, 0]
+				},
+				{
+					"option_name": "Keycap Language",
+					"option_list": ["Thai", "English"],
+					"option_price_added": [100, 200, 0]
+				}
+			],
+			"tags": ["75%", "RGB", "Hot-Swappable"],
+			"product_image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		},
+		{
+			"productID": "ax67s45d6uaxv92323698",
+			"productName": "Keychron K8",
+			"productCategory": "Keyboard",
+			"productPricePerUnit": 6590,
+			"productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+			"quantityOnHand": 40,
+			"option": [
+				{
+					"option_name": "Color",
+					"option_list": ["white", "black"],
+					"option_price_added": [200, -200]
+				},
+				{
+					"option_name": "Switch",
+					"option_list": [
+						"Gateron Phantom Red",
+						"Gateron Phantom Brown",
+						"Gateron Phantom Blue"
+					],
+					"option_price_added": [100, 200, 0]
+				},
+				{
+					"option_name": "Keycap Language",
+					"option_list": ["Thai", "English"],
+					"option_price_added": [100, 200, 0]
+				}
+			],
+			"tags": ["75%", "RGB", "Hot-Swappable"],
+			"product_image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		}
+	]
+}

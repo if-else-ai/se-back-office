@@ -1,0 +1,27 @@
+{
+    "productName": "Keychron K8",
+    "productCategory": "Keyboard",
+    "productPricePerUnit": 6590,
+    "productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "quantityOnHand": 40,
+    "option": [
+        {
+            "option_name": "Color",
+            "option_list": ["white","black"],
+            "option_price_added": [200,-200]
+        },
+        {
+            "option_name": "Switch",
+            "option_list": ["Gateron Phantom Red","Gateron Phantom Brown","Gateron Phantom Blue"],
+            "option_price_added": [100,200,0]
+        },
+        {
+            "option_name": "Keycap Language",
+            "option_list": ["Thai","English"],
+            "option_price_added": [100,200,0]
+        }
+    ],
+    "tags": [
+        "75%","RGB","Hot-Swappable"
+    ]
+}

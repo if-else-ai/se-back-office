@@ -1,0 +1,17 @@
+{
+    "productName": "Gazzew Boba U4t Thocky Tactile Switches",
+    "productCategory": "Switch",
+    "productPricePerUnit": 40,
+    "productDescription": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "quantityOnHand": 400,
+    "option": [
+        {
+            "option_name": "Lube",
+            "option_list": ["Lube","Un-lube"],
+            "option_price_added": [2,0]
+        }
+    ],
+    "tags": [
+        "Tactile"
+    ]
+}
