@@ -5,10 +5,10 @@
 			<!-- Path Navigation -->
 			<div class="nav-menu__container">
 				<ul class="nav-menu">
-					<a class="nal-links mr-6" href="/home">
+					<a class="nal-links mr-6" href="/product">
 						Products
 					</a>
-					<a class="nal-links mr-4" href="/shopping">
+					<a class="nal-links mr-4" href="/user">
 						User
 					</a>
 				</ul>
@@ -24,18 +24,14 @@
 			</div>
 
 			<!-- Icon  -->
-			<div class="nav-icon__container">
+			<!-- <div class="nav-icon__container">
 				<v-menu transition="slide-y-transition" offset-y bottom open-on-hover>
 					<template v-slot:activator="{ on, attrs }">
 						<v-btn v-bind="attrs" v-on="on" icon color="white">
 							<v-icon>mdi-account</v-icon>
 						</v-btn>
 					</template>
-					<!-- <v-list>
-						<v-list-item v-for="(item, i) in items" :key="i">
-							<v-list-item-title>{{ item.menu }}</v-list-item-title>
-						</v-list-item>
-					</v-list> -->
+
 					<v-list>
 						<v-list-item class="menu-link mx-4" @click="toProfile">
 							<v-list-item-title  > Profile </v-list-item-title>
@@ -51,7 +47,7 @@
 						<v-icon>mdi-cart-outline</v-icon>
 					</v-btn>
 				</v-badge>
-			</div>	
+			</div>	 -->
 
 		</v-app-bar>
 	</nav>
