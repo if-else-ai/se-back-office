@@ -1,132 +1,53 @@
 <template>
+
 	<div id="signin">
 		<div class="signin-form">
-			<v-card class="elevation-12">
-				<v-toolbar dark color="primary">
-					<v-toolbar-title
-						>{{
-							isRegister
-								? stateObj.register.name
-								: stateObj.login.name
-						}}
-						</v-toolbar-title
-					>
-				</v-toolbar>
-				<v-card-text>
-					<form
-						ref="form"
-						@submit.prevent="isRegister ? register() : login()"
-					>
-						<v-text-field
-							v-model="email"
-							name="email"
-							label="Email"
-							type="text"
-							placeholder="email"
-							required
-						></v-text-field>
-
-						<v-text-field
-							v-model="password"
-							name="password"
-							label="Password"
-							type="password"
-							placeholder="password"
-							required
-						></v-text-field>
-
-						<v-text-field
-							v-if="isRegister"
-							v-model="confirmPassword"
-							name="confirmPassword"
-							label="Confirm Password"
-							type="password"
-							placeholder="cocnfirm password"
-							required
-						></v-text-field>
-						<div class="red--text">{{ errorMessage }}</div>
-						<v-btn
-							type="submit"
-							class="mt-4"
-							color="primary"
-							value="log in"
-							>{{
-								isRegister
-									? stateObj.register.name
-									: stateObj.login.name
-							}}</v-btn
-						>
-						<div
-							class="grey--text mt-4 register-button"
-							v-on:click="isRegister = !isRegister"
-						>
-							{{ toggleMessage }}
-						</div>
-					</form>
-				</v-card-text>
-			</v-card>
+			<form @submit.prevent="onSubmit">
+				<div class="input">
+					<label for="email">Mail</label>
+					<input id="email" v-model="email" />
+				</div>
+				<div class="input">
+					<label for="password">Password</label>
+					<input type="password" id="password" v-model="password" />
+				</div>
+				<div class="submit">
+					<button type="submit">Submit</button>
+				</div>
+			</form>
 		</div>
 	</div>
+
 </template>
 
 <script>
 export default {
-	data: () => {
+	data() {
 		return {
 			email: "",
 			password: "",
-			confirmPassword: "",
-			isRegister: false,
-			errorMessage: "",
-			stateObj: {
-				register: {
-					name: "Register",
-					message: "Aleady have an Acoount? login.",
-				},
-				login: {
-					name: "Login",
-					message: "Register",
-				},
-			},
 		};
 	},
+
+
 	methods: {
-		login() {
-			const { email, password } = this;
-			this.$store.dispatch('login', {email: email, password: password})
-		},
-		register() {
-			if (this.password == this.confirmPassword) {
-				this.isRegister = false;
-				this.errorMessage = "";
-				this.$refs.form.reset();
-				this.$store.dispatch('register', {email: this.email,password: this.password})
-			} else {
-				this.errorMessage = "password did not match";
-			}
+		onSubmit() {
+			const formData = {
+				email: this.email,
+				password: this.password,
+			};
+			this.$store.dispatch("login", {
+				email: formData.email,
+				password: formData.password,
+			});
 		},
 	},
-	computed: {
-		toggleMessage: function() {
-			return this.isRegister
-				? this.stateObj.register.message
-				: this.stateObj.login.message;
-		},
-	},
+
+
 };
 </script>
 
 <style scoped>
-.register-button {
-	cursor: pointer ;
-	transition: all 0.3s ease-in;
-}
-
-.register-button:hover {
-	color: blue !important;
-	transition: all 0.3s ease-in;
-}
-
 .signin-form {
 	display: flex;
 	flex-direction: column;

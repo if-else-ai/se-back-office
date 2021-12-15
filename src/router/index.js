@@ -21,11 +21,11 @@ const routes = [
 		name: "product",
 		component: () => import("../views/product.vue"),
 	},
-	{
-		path: "/home",
-		name: "home",
-		component: () => import("../views/home.vue"),
-	},
+	// {
+	// 	path: "/summary",
+	// 	name: "summary",
+	// 	component: () => import("../views/summary.vue"),
+	// },
 	// {
 	// 	path: "/keyboard",
 	// 	name: "keyboard",
@@ -61,21 +61,12 @@ const routes = [
 		name: "profile",
 		component: () => import("../views/profile.vue"),
 	},
-	{
-		path: "/register",
-		name: "register",
-		component: () => import("../views/register.vue"),
-	},
 ];
 
 const router = new VueRouter({
 	// using 'stack'
 	mode: "history",
 	routes,
-	scrollBehavior(to, from, savedPosition) {
-		return { x: 0, y: 0 };
-	},
 });
-
 
 export default router;
