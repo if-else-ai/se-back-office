@@ -1,5 +1,6 @@
 <template>
 	<v-container class="d-flex justify-center align-center">
+		
 		<v-card flat width="1200" height="800">
 			<v-data-table
 				:headers="headers"
