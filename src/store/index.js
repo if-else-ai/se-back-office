@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 import product from "./modules/product.js";
 import login from "./modules/login.js";
+import user from "./modules/user.js";
 
 // State management in vue
 Vue.use(Vuex);
@@ -11,6 +12,7 @@ export default new Vuex.Store({
 	// defined module used
 	modules: {
 		product,
+		user,
 		login
 	},
 });

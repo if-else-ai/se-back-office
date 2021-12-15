@@ -1,14 +1,14 @@
-import axios from '../../api/axios-product.js'
+import axios from '../../api/axios-user.js'
 
 // state data
 const state = {
-	products: [],
+	user: [],
 };
 
 // mutate state
 const mutations = {
-	setProducts(state, products) {
-		state.products = products;
+	setUser(state, user) {
+		state.user = user;
 	},
 
 };	
@@ -16,9 +16,10 @@ const mutations = {
 // action -> define app data logic
 const actions = {
     // get assignemnt => GET
-	getProducts({ commit }) {
-		axios.get('/products').then(res => {
-			commit('setProducts', res.data)
+	getUser({ commit }) {
+		axios.get('/users').then(res => {
+			// store products in State
+			commit('setUser', res.data)
 		})
 	},
 
@@ -27,8 +28,8 @@ const actions = {
 // getters return requested data
 const getters = {
 	// get all assignment
-	products(state){
-		return state.products
+	user(state){
+		return state.user
 	},
 	// get assignment list -> assignment menu
 };

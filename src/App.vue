@@ -21,10 +21,13 @@ export default {
     Navigation,
   },
 
-  data: () => ({}),
+  data: () => ({
+
+  }),
 
 	created() {
 		this.$store.dispatch("getProducts");
+		this.$store.dispatch("getUser");
 	},
 
   computed: {
