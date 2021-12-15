@@ -17,6 +17,7 @@ export default {
 	data: () => ({
 		headers: [
 			{ text: "User ID", value:'id' },
+			{ text: "E-mail", value:'email' },
 			{ text: "Name", value:'name' },
 			{ text: "Gender", value:'gender' },
 		],
@@ -30,9 +31,11 @@ export default {
 				return {
 					id: data.id,
 					name: data.name,
+					email: data.email,
 					gender: data.gender,
 				};
 			});
+			console.log(data)
 			// console.log(data)
 			return data;
 		},

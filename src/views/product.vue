@@ -3,7 +3,7 @@
 		class="page-container d-flex flex-column justify-center align-center"
 	>
 		<div class="my-4 align-self-start">
-			<v-btn color="green white--text" @click="addProductDialog = true">
+			<v-btn color="green white--text" @click="addProductDialog = !addProductDialog">
 				Add Product
 			</v-btn>
 		</div>
