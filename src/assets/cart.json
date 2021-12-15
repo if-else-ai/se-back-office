@@ -1,0 +1,67 @@
+{
+	"carts": [
+		{
+			"id": "ax6asd7s45d6uaxv92asd323698",
+			"name": "Keychron K4",
+			"category": "Keyboard",
+			"price": 6500,
+			"quantity": 1,
+			"option": [
+				{
+					"name": "Color",
+					"select": "white",
+					"priceAdded": 0
+				}
+			],
+			"totalPrice": 6590,
+			"image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		},
+		{
+			"id": "ax6asd7s45d6uaxv92asd323698",
+			"name": "Keychron K4",
+			"category": "Keyboard",
+			"price": 6590,
+			"quantity": 1,
+			"option": [
+				{
+					"name": "Model",
+					"select": "White",
+					"priceAdded": 0
+				},
+				{
+					"name": "Color",
+					"select": "Space Gray",
+					"priceAdded": 0
+				}
+			],
+			"totalPrice": 6590,
+			"image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		},
+		{
+			"id": "ax6asd7s45d6uaxv92asd323698",
+			"name": "Keychron K4",
+			"category": "Custom",
+			"price": 6590,
+			"quantity": 1,
+			"option": [
+				{
+					"name": "Keyboard",
+					"select": "Keychron K4",
+					"priceAdded": 0
+				},
+				{
+					"name": "Switch",
+					"select": "Gazzew Boba U4T",
+					"priceAdded": 0
+				},
+				{
+					"name": "Keycap",
+					"select": "GMK Tako",
+					"priceAdded": 0
+				}
+			],
+			"totalPrice": 6590,
+			"image": ["https://external-preview.redd.it/NM4s5l1oPe6iE2nD2HGueHhV9xTCmpDrGVqtveo2xNA.jpg?auto=webp&s=a3c3e52fc8e7da8fa9293847e1e5a61f56cabb10"]
+		}
+	]
+}

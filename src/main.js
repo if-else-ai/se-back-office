@@ -13,7 +13,7 @@ import axios from 'axios';
 // store -> State Management -> store data
 // axios -> HTTP Request API
 // router -> apps router
-document.title = "Kibby Office"
+document.title = "Kibby"
 
 const favicon = document.querySelector('[rel=icon]');
 

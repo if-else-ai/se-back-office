@@ -25,7 +25,7 @@
 .nav-logo__container {
 	position: relative;
 	/* Changing Logo Position */
-	left: -94px;
+	left: -100px;
 	justify-self: center;
 	text-decoration: none;
 	cursor: pointer;
@@ -48,16 +48,16 @@
 	justify-content: end;
 }
 
-.v-application ul, .v-application ol {
+.nav-bar__items > .v-toolbar__content ul, .nav-bar__items > .v-toolbar__content ol {
     padding-left: 0 !important;
 }
 
-.v-application a {
+.nav-bar__items > .v-toolbar__content a {
 	color: white !important;
 	text-decoration: none;
 	transition: all 0.4s;
 }
-.v-application a:hover {
+.nav-bar__items > .v-toolbar__content a:hover {
 	color: rgb(151, 151, 151) !important;
 	text-decoration: none;
 	transition: background-color 0.4s ease-out, color 0.3s ease-out;
