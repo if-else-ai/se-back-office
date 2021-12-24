@@ -1,11 +1,12 @@
 <template>
-	<v-container class="d-flex justify-center align-center">
+	<v-container class="page-container d-flex flex-column justify-center align-center">
 		
+		<h1 class="my-6">User</h1>
 		<v-card flat width="1200" height="800">
 			<v-data-table
 				:headers="headers"
 				:items="user"
-				:items-per-page="5"
+				:items-per-page="20"
 				class="elevation-1"
 			></v-data-table>
 		</v-card>
@@ -43,4 +44,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.page-container {
+	padding: 0 400px;
+}
+</style>

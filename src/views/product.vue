@@ -2,6 +2,7 @@
 	<v-container
 		class="page-container d-flex flex-column justify-center align-center"
 	>
+		<h1 class="my-6">Product</h1>
 		<div class="my-4 align-self-start">
 			<v-btn color="green white--text" @click="addProductDialog = !addProductDialog">
 				Add Product

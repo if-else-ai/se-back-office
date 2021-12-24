@@ -28,6 +28,7 @@ export default {
 	created() {
 		this.$store.dispatch("getProducts");
 		this.$store.dispatch("getUser");
+		this.$store.dispatch("getOrder");
 	},
 
   computed: {

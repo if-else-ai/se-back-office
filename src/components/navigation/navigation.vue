@@ -6,10 +6,13 @@
 			<div class="nav-menu__container">
 				<ul class="nav-menu">
 					<a class="nal-links mr-6" href="/product">
-						Products
+						Product
 					</a>
 					<a class="nal-links mr-4" href="/user">
 						User
+					</a>
+					<a class="nal-links mr-4" href="/order">
+						Order
 					</a>
 				</ul>
 			</div>
