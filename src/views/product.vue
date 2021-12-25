@@ -272,7 +272,7 @@
 						>
 						</v-combobox>
 					</div>
-					<v-btn class="green white--text" @click="submitProduct">
+					<v-btn class="green white--text" @click="submitUpdateProduct">
 						Update Product
 					</v-btn>
 				</v-form>
@@ -316,17 +316,32 @@
 		</v-dialog>
 
 		<!-- Data Table -->
-		<v-card flat width="1200" height="800">
+		<v-card width="1200" >
+			<v-card-title>
+				<v-text-field
+					v-model="search"
+					append-icon="mdi-magnify"
+					label="Search product"
+					single-line
+					hide-details
+				></v-text-field>
+			</v-card-title>
 			<v-data-table
 				:headers="headers"
 				:items="products"
 				:items-per-page="30"
+				:search="search"
 				class="elevation-1"
 			>
 				<template v-slot:item.quantity="{ item }">
 					<v-chip :color="getQuantityColor(item.quantity)" dark>
 						{{ item.quantity }}
 					</v-chip>
+				</template>
+
+				<template v-slot:item.image="{ item }">
+						<v-icon color="green darken-4" v-if="item.image !== null" @click="logger(item)" >mdi-checkbox-marked-circle</v-icon>
+						<v-icon color="red" v-else >mdi-alert-circle</v-icon>
 				</template>
 
 				<template v-slot:item.actions="{ item }">
@@ -374,8 +389,10 @@ export default {
 			{ text: "Name", value: "name" },
 			{ text: "Price (Baht)", value: "price" },
 			{ text: "Quantity", value: "quantity" },
+			{ text: "Image", value: "image" },
 			{ text: "Actions", value: "actions", sortable: false },
 		],
+		search: "",
 		categoryList: categoryList,
 		tagList: [],
 		suggestTag: [],
@@ -455,9 +472,11 @@ export default {
 		},
 
 		deleteProduct() {
-			console.log(this.currentProduct.id);
-			// this.$store.dispatch('deleteProduct', this.currentProduct.id)
+			this.$store.dispatch('deleteProduct', this.currentProduct.id)
 		},
+		// logger(item){
+		// 	console.log(item)
+		// },
 
 		onUploadImage(event) {
 			const files = event.target.files;
@@ -527,6 +546,16 @@ export default {
 			// this.$store.dispatch("addProduct", formData);
 			this.addProductDialog = false;
 		},
+		submitUpdateProduct() {
+			let formData = {
+				...this.editProductData,
+				price: Number(this.editProductData.price),
+				quantity: Number(this.editProductData.quantity),
+			};
+			console.log(formData);
+			this.addProductDialog = false;
+
+		}
 	},
 
 	computed: {
@@ -538,6 +567,7 @@ export default {
 					name: data.name,
 					price: data.price,
 					quantity: data.quantity,
+					image: data.image
 				};
 			});
 			console.log(data);

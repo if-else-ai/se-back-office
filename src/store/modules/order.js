@@ -22,10 +22,18 @@ const actions = {
 	},
 	updateOrder({ commit }, updateDate) {
 		axios.put("/order", {...updateDate}).then((res) => {
-            alert('update Success')
-            console.log(res)
+            alert('Update Order Successfully')
 		}).catch(err => {
-            alert('update Fail')
+            alert('Fail to Update Order')
+        })
+	},
+
+	deleteOrder({ commit, dispatch }, orderId) {
+		axios.delete(`/order/${orderId}`).then((res) => {
+            alert('Delete order Successfully')
+			dispatch('getOrder')
+		}).catch(err => {
+            alert('Fail to Delete Order')
         })
 	},
 };

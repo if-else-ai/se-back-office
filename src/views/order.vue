@@ -3,7 +3,8 @@
 		class="page-container d-flex flex-column justify-center align-center"
 	>
 		<h1 class="my-6">Order</h1>
-
+		
+		<!-- Edit / Update Order Dialog -->
 		<v-dialog v-model="editOrderDialog" width="600">
 			<v-card v-if="orderData">
 				<v-toolbar dark color="primary">
@@ -43,11 +44,53 @@
 			</v-card>
 		</v-dialog>
 
+		<!-- Delete Order Dialog -->
+		<v-dialog v-if="currentOrder" v-model="deleteOrderDialog" max-width="600">
+			<v-card class="">
+				<v-toolbar dark color="error">
+					<v-toolbar-title>Remove Order </v-toolbar-title>
+				</v-toolbar>
+				<h3 class="ma-4 text-center">
+					Are you sure you want to delete {{ currentOrder.id }} ?
+				</h3>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn
+						color="error"
+						raised
+						@click="deleteOrderDialog = false"
+					>
+						No
+					</v-btn>
+					<v-btn
+						color="success"
+						raised
+						@click="
+							deleteOrder();
+							deleteOrderDialog = false;
+						"
+					>
+						Yes
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+
 		<v-card flat min-width="1400" height="800">
+			<v-card-title>
+				<v-text-field
+					v-model="search"
+					append-icon="mdi-magnify"
+					label="Search order, name, email, etc."
+					single-line
+					hide-details
+				></v-text-field>
+			</v-card-title>
 			<v-data-table
 				:headers="headers"
 				:items="order"
 				:items-per-page="10"
+				:search="search"
 				class="elevation-1"
 			>
 				<template v-slot:item.status="{ item }">
@@ -81,6 +124,17 @@
 						</v-icon>
 						Update
 					</v-btn>
+
+					<v-icon
+						small
+						@click="
+							onDeleteItem(item);
+							deleteOrderDialog = !deleteOrderDialog;
+						"
+					>
+						mdi-delete
+					</v-icon>
+
 				</template>
 			</v-data-table>
 		</v-card>
@@ -98,11 +152,14 @@ export default {
 			{ text: "TrackingNumber", value: "trackingNumber" },
 			{ text: "Actions", value: "actions", sortable: false },
 		],
+		search: "",
 		editOrderDialog: false,
 		orderData: {},
 		orderStatus: ["Paid", "Shipping", "Completed", "Cancelled"],
 		selectedStatus: "",
 		trackingNumber: "",
+		deleteOrderDialog: false,
+		currentOrder: null,
 	}),
 
 	methods: {
@@ -134,17 +191,30 @@ export default {
 			}
 		},
 
-		onDeleteItem() {},
+		onDeleteItem(item) {
+			let orderId = item.id
+			this.currentOrder = item
+			console.log(orderId)
+		},
 		updateOrder() {
 			let formData = {
 				id: this.orderData.id,
 				status: this.selectedStatus,
 			};
+
 			if (formData.status === "Shipping") {
+				if(this.trackingNumber === ""){
+					alert("Require Tracking Number")
+					return
+				}
 				formData.trackingNumber = this.trackingNumber;
 			}
 
 			this.$store.dispatch("updateOrder", formData);
+		},
+
+		deleteOrder() {
+			this.$store.dispatch('deleteOrder', this.currentOrder.id)
 		},
 	},
 

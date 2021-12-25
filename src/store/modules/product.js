@@ -41,6 +41,16 @@ const actions = {
 				dispatch('getProducts')
 			});
 	},
+
+	deleteProduct({ commit, dispatch }, productId) {
+		console.log(productId)
+		axios.delete(`/product/${productId}`).then((res) => {
+			alert('Delete Product Successfully')
+			dispatch('getProducts')
+		}).catch(err => {
+			alert('Fail to Delete Product')
+		})
+	},
 	
 };
 

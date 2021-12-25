@@ -15,17 +15,17 @@ const mutations = {
 
 // action -> define app data logic
 const actions = {
-    // get assignemnt => GET
 	getUser({ commit }) {
 		axios.get('/users').then(res => {
-			// store products in State
 			commit('setUser', res.data)
 		})
 	},
 	deleteUser({ commit, dispatch }, userID) {
 		axios.delete(`/users/${userID}`).then(res => {
-			// store products in State
+			alert('Delete User Successfully')
 			dispatch('getUser')
+		}).catch(err => {
+			alert('Fail to Delete User')
 		})
 	},
 

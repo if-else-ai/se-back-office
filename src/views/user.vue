@@ -70,15 +70,15 @@
 						</v-menu>
 					</div>
 					<div class="form__input d-flex align-center justify-center">
-						<h4>telNo</h4>
+						<h4>Tel</h4>
 						<v-text-field
-							label="telNo"
+							label="Tel"
 							hint="30"
 							v-model="editUserData.telNo"
 						>
 						</v-text-field>
 					</div>
-					<v-btn class="green white--text" @click="submitProduct">
+					<v-btn class="green white--text" @click="updateUser">
 						Update User
 					</v-btn>
 				</v-form>
@@ -106,7 +106,7 @@
 						color="success"
 						raised
 						@click="
-							deleteProduct();
+							deleteUser();
 							deleteUserDialog = false;
 						"
 					>
@@ -116,11 +116,21 @@
 			</v-card>
 		</v-dialog>
 
-		<v-card flat width="1200" height="800">
+		<v-card width="1200" >
+			<v-card-title>
+				<v-text-field
+					v-model="search"
+					append-icon="mdi-magnify"
+					label="Search id, email, name, etc."
+					single-line
+					hide-details
+				></v-text-field>
+			</v-card-title>
 			<v-data-table
 				:headers="headers"
 				:items="user"
 				:items-per-page="20"
+				:search="search"
 				class="elevation-1"
 			>
 				<template v-slot:item.actions="{ item }">
@@ -164,7 +174,8 @@ export default {
 		editUserDialog: false,
 		editUserData: null,
 		menu: false,
-		gender: ['Male', 'Female']
+		gender: ["Male", "Female"],
+		search: "",
 		// name: "",
 		// gender: "",
 		// date: null,
@@ -179,10 +190,15 @@ export default {
 		},
 		onDeleteUser(item) {
 			this.currentUser = item;
-			console.log(this.currentUser);
 		},
 		save(date) {
 			this.$refs.menu.save(date);
+		},
+		deleteUser(){
+			this.$store.dispatch('deleteUser', this.currentUser.id)
+		},
+		updateUser(){
+			
 		},
 	},
 
