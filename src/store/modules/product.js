@@ -41,6 +41,7 @@ const actions = {
 				dispatch('getProducts')
 			});
 	},
+	
 };
 
 // getters return requested data

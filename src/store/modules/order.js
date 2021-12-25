@@ -28,27 +28,6 @@ const actions = {
             alert('update Fail')
         })
 	},
-	// addProduct({ commit, dispatch }, productData) {
-	// 	// console.log({...productData})
-	// 	axios.post("/product", { ...productData }).then((res) => {
-	// 		alert('Add Product Successfully')
-	// 		dispatch('getProducts')
-	// 	});
-	// },
-
-	// updateOrder({ commit, dispatch }, productData) {
-	// 	// console.log({...productData})
-	// 	axios
-	// 		.post("/image", productData.formData, {
-	// 			headers: {
-	// 				"Content-Type": "multipart/form-data",
-	// 			},
-	// 		})
-	// 		.then((res) => {
-	// 			alert('Upload Image Successfully')
-	// 			dispatch('getProducts')
-	// 		});
-	// },
 };
 
 // getters return requested data

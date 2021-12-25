@@ -3,63 +3,84 @@
 		class="page-container d-flex flex-column justify-center align-center"
 	>
 		<h1 class="my-6">Order</h1>
-		<v-card v-if="editOrderDialog === true" class="ma-4" width="600">
-			<v-toolbar dark color="primary">
-				<v-toolbar-title>Update Order </v-toolbar-title>
-			</v-toolbar>
-			<v-form class="d-flex flex-column pa-4">
-				<div class="form__input d-flex align-center justify-center">
-					<h4>Order ID</h4>
-					<v-text-field
-						label="name"
-						hint="Keychron Q1"
-						v-model="orderData.id"
-					>
-					</v-text-field>
-				</div>
-				<div class="form__input d-flex align-center justify-center">
-					<h4>Status</h4>
-					<v-combobox
-						label="Status"
-						:items="orderStatus"
-						v-model="selectedStatus"
-					>
-					</v-combobox>
-				</div>
-				<div v-if="selectedStatus === 'Shipping'" class="form__input d-flex align-center justify-center">
-					<h4>Tracking Number</h4>
-					<v-text-field
-						label="Tracking NO."
-						v-model="trackingNumber"
-					>
-					</v-text-field>
-				</div>
-                <v-btn class="green white--text" @click="updateOrder">
-					Update
-				</v-btn>
-			</v-form>
-		</v-card>
-		<v-card flat width="1200" height="800">
+
+		<v-dialog v-model="editOrderDialog" width="600">
+			<v-card v-if="orderData">
+				<v-toolbar dark color="primary">
+					<v-toolbar-title>Update Order </v-toolbar-title>
+				</v-toolbar>
+				<v-form class="d-flex flex-column pa-4">
+					<div class="form__input d-flex align-center justify-center">
+						<h4>Order ID</h4>
+						<v-text-field
+							label="name"
+							hint="Keychron Q1"
+							v-model="orderData.id"
+						>
+						</v-text-field>
+					</div>
+					<div class="form__input d-flex align-center justify-center">
+						<h4>Status</h4>
+						<v-combobox
+							label="Status"
+							:items="orderStatus"
+							v-model="selectedStatus"
+						>
+						</v-combobox>
+					</div>
+					<div v-if="selectedStatus === 'Shipping'" class="form__input d-flex align-center justify-center">
+						<h4>Tracking Number</h4>
+						<v-text-field
+							label="Tracking NO."
+							v-model="orderData.trackingNumber"
+						>
+						</v-text-field>
+					</div>
+					<v-btn class="green white--text" @click="updateOrder">
+						Update
+					</v-btn>
+				</v-form>
+			</v-card>
+		</v-dialog>
+
+		<v-card flat min-width="1400" height="800">
 			<v-data-table
 				:headers="headers"
 				:items="order"
 				:items-per-page="10"
 				class="elevation-1"
 			>
+				<template v-slot:item.status="{ item }">
+					<v-chip :color="getOrderStatusColor(item.status)" dark>
+						{{
+							item.status
+						}}
+					</v-chip>
+				</template>
+				<template v-slot:item.trackingNumber="{ item }">
+					<v-chip :color="getTrackingColor(item.trackingNumber)" dark>
+						{{
+							item.trackingNumber
+								? item.trackingNumber
+								: "No Tracking Number"
+						}}
+					</v-chip>
+				</template>
+
 				<template v-slot:item.actions="{ item }">
-					<v-icon
-						small
-						class="mr-2"
+					<v-btn
+						depressed
 						@click="
 							editOrderDialog = true;
 							onEditOrder(item);
 						"
+						class="mx-2"
 					>
-						mdi-pencil
-					</v-icon>
-					<v-icon small @click="onDeleteItem(item)">
-						mdi-delete
-					</v-icon>
+						<v-icon small class="mr-2">
+							mdi-pencil
+						</v-icon>
+						Update
+					</v-btn>
 				</template>
 			</v-data-table>
 		</v-card>
@@ -79,27 +100,52 @@ export default {
 		],
 		editOrderDialog: false,
 		orderData: {},
-		orderStatus: ["Pending", "Paid", "Shipping", "Completed", "Cancelled"],
-		selectedStatus: "Shipping",
-		trackingNumber: '',
+		orderStatus: ["Paid", "Shipping", "Completed", "Cancelled"],
+		selectedStatus: "",
+		trackingNumber: "",
 	}),
 
 	methods: {
 		onEditOrder(item) {
 			this.orderData = item;
 		},
-		onDeleteItem() {},
-        updateOrder(){
-            let formData = {
-                id: this.orderData.id,
-                status: this.selectedStatus,
-            }
-            if(formData.status === 'Shipping'){
-                formData.trackingNumber = this.trackingNumber
-            }
 
-            this.$store.dispatch('updateOrder', formData)
-        },
+		getTrackingColor(TrackingNumber) {
+			if (TrackingNumber) {
+				return "green";
+			} else {
+				return "yellow darken-4";
+			}
+		},
+		getOrderStatusColor(status) {
+			switch (status) {
+				case 'Shipping':
+					return 'blue darken-4'
+				case 'Cancelled':
+					return 'red'
+				case 'Paid':
+					return 'yellow darken-4'
+				case 'Pending':
+					return 'purple darken-4'
+				case 'Completed':
+					return 'green darken-4'
+				default: 
+				return 'black'
+			}
+		},
+
+		onDeleteItem() {},
+		updateOrder() {
+			let formData = {
+				id: this.orderData.id,
+				status: this.selectedStatus,
+			};
+			if (formData.status === "Shipping") {
+				formData.trackingNumber = this.trackingNumber;
+			}
+
+			this.$store.dispatch("updateOrder", formData);
+		},
 	},
 
 	computed: {

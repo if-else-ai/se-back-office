@@ -76,7 +76,6 @@ const actions = {
 	// 		.catch((error) => {
 	// 			alert("เกิดข้อผิดพลาด");
 	// 		});
-		
 	// },
 
     login({ commit, dispatch }, authData) {
@@ -126,16 +125,13 @@ const actions = {
 		// localStorage.removeItem('userId')
 		router.replace("/login");
 	},
+
 	// Store to backend
 	// Currently unavailable
 	storeUser({ commit, state }, userData) {
 		if (!state.idToken) {
 			return;
 		}
-		// Store on backend / example below is Firebase
-		// axios.post('/users.json' + '?auth=' + state.idToken, userData)
-		//   .then(res => console.log(res))
-		//   .catch(error => console.log(error))
 	},
 
 	

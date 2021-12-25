@@ -5,6 +5,9 @@
 			<!-- Path Navigation -->
 			<div class="nav-menu__container">
 				<ul class="nav-menu">
+					<a class="nal-links mr-4" href="/dashboard">
+						Dashboard
+					</a>
 					<a class="nal-links mr-6" href="/product">
 						Product
 					</a>
@@ -25,32 +28,6 @@
 					</h1>
 				</a>
 			</div>
-
-			<!-- Icon  -->
-			<!-- <div class="nav-icon__container">
-				<v-menu transition="slide-y-transition" offset-y bottom open-on-hover>
-					<template v-slot:activator="{ on, attrs }">
-						<v-btn v-bind="attrs" v-on="on" icon color="white">
-							<v-icon>mdi-account</v-icon>
-						</v-btn>
-					</template>
-
-					<v-list>
-						<v-list-item class="menu-link mx-4" @click="toProfile">
-							<v-list-item-title  > Profile </v-list-item-title>
-						</v-list-item>
-						<v-list-item class="menu-link mx-4" @click="onLogout">
-							<v-list-item-title  > Logout </v-list-item-title>
-						</v-list-item>
-					</v-list>
-				</v-menu>
-
-				<v-badge dot color="red" overlap offset-x="18" offset-y="16">
-					<v-btn icon color="white" @click="toProductCart">
-						<v-icon>mdi-cart-outline</v-icon>
-					</v-btn>
-				</v-badge>
-			</div>	 -->
 
 		</v-app-bar>
 	</nav>

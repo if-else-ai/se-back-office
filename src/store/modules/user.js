@@ -22,6 +22,12 @@ const actions = {
 			commit('setUser', res.data)
 		})
 	},
+	deleteUser({ commit, dispatch }, userID) {
+		axios.delete(`/users/${userID}`).then(res => {
+			// store products in State
+			dispatch('getUser')
+		})
+	},
 
 };
 
