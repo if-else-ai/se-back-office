@@ -7,7 +7,7 @@
 		<v-dialog v-model="editUserDialog" max-width="700">
 			<v-card v-if="editUserData" class="">
 				<v-toolbar dark color="primary">
-					<v-toolbar-title>Add Product </v-toolbar-title>
+					<v-toolbar-title> Edit User </v-toolbar-title>
 				</v-toolbar>
 				<v-form class="d-flex flex-column pa-6">
 					<div class="form__input d-flex align-center justify-center">
