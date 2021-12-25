@@ -33,7 +33,7 @@
 						<h4>Tracking Number</h4>
 						<v-text-field
 							label="Tracking NO."
-							v-model="orderData.trackingNumber"
+							v-model="trackingNumber"
 						>
 						</v-text-field>
 					</div>
@@ -165,6 +165,12 @@ export default {
 	methods: {
 		onEditOrder(item) {
 			this.orderData = item;
+			if(this.orderData.status === 'Shipping' || this.orderData.status === 'Paid'){
+				this.selectedStatus = 'Shipping'
+			} else {
+				this.selectedStatus = this.orderData.status
+			}
+			this.trackingNumber = this.orderData.trackingNumber
 		},
 
 		getTrackingColor(TrackingNumber) {
@@ -203,6 +209,7 @@ export default {
 			};
 
 			if (formData.status === "Shipping") {
+				console.log(this.trackingNumber)
 				if(this.trackingNumber === ""){
 					alert("Require Tracking Number")
 					return
@@ -211,6 +218,7 @@ export default {
 			}
 
 			this.$store.dispatch("updateOrder", formData);
+			this.trackingNumber = ''
 		},
 
 		deleteOrder() {

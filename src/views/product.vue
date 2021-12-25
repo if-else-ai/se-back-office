@@ -12,7 +12,7 @@
 				Add Product
 			</v-btn>
 		</div>
-		
+
 		<!-- Add Product Dialog Form -->
 		<v-dialog v-model="addProductDialog" max-width="700">
 			<v-card class="">
@@ -33,7 +33,6 @@
 						<h4>Category</h4>
 						<v-combobox
 							label="Category"
-							hint="Keyboard"
 							v-model="addProductData.category"
 							:items="categoryList"
 							@change="changeTagList"
@@ -87,7 +86,23 @@
 							hint="0,0 or 0,100"
 						>
 						</v-text-field>
-						<v-btn @click="addOption">
+						<v-btn
+							:class="
+								option.name !== '' &&
+								option.list !== '' &&
+								option.priceAdded !== ''
+									? 'white--text'
+									: ''
+							"
+							:color="
+								option.name !== '' &&
+								option.list !== '' &&
+								option.priceAdded !== ''
+									? 'green'
+									: 'gray'
+							"
+							@click="addOption"
+						>
 							ADD
 						</v-btn>
 					</div>
@@ -112,7 +127,13 @@
 							<li>
 								{{ `PriceAdded: ${item.priceAdded}` }}
 							</li>
-							<v-btn small class="white--text" color="red" @click="addProductData.option.splice(index, 1)">delete option</v-btn>
+							<v-btn
+								small
+								class="white--text"
+								color="red"
+								@click="addProductData.option.splice(index, 1)"
+								>delete option</v-btn
+							>
 						</ul>
 					</div>
 					<div class="form__input d-flex align-center justify-center">
@@ -150,7 +171,9 @@
 		<v-dialog v-model="editProductDialog" max-width="1200">
 			<v-card v-if="editProductData" class="">
 				<v-toolbar dark color="primary">
-					<v-toolbar-title>Edit Product: {{ editProductData.name }} </v-toolbar-title>
+					<v-toolbar-title
+						>Edit Product: {{ editProductData.name }}
+					</v-toolbar-title>
 				</v-toolbar>
 				<v-form class="d-flex flex-column pa-6">
 					<div class="form__input d-flex align-center justify-center">
@@ -220,7 +243,23 @@
 							hint="0,0 or 0,100"
 						>
 						</v-text-field>
-						<v-btn @click="addEditOption">
+						<v-btn
+							:class="
+								option.name !== '' &&
+								option.list !== '' &&
+								option.priceAdded !== ''
+									? 'white--text'
+									: ''
+							"
+							:color="
+								option.name !== '' &&
+								option.list !== '' &&
+								option.priceAdded !== ''
+									? 'green'
+									: 'gray'
+							"
+							@click="addEditOption"
+						>
 							ADD
 						</v-btn>
 					</div>
@@ -233,7 +272,7 @@
 							v-for="(item, index) in editProductData.option"
 							:key="index"
 						>
-							<h3>Option {{ index + 1 }}  </h3>
+							<h3>Option {{ index + 1 }}</h3>
 							<li>
 								{{
 									`Label: ${editProductData.option[index].name}`
@@ -245,7 +284,13 @@
 							<li>
 								{{ `PriceAdded: ${item.priceAdded}` }}
 							</li>
-							<v-btn small class="white--text" color="red" @click="editProductData.option.splice(index, 1)">delete option</v-btn>
+							<v-btn
+								small
+								class="white--text"
+								color="red"
+								@click="editProductData.option.splice(index, 1)"
+								>delete option</v-btn
+							>
 						</ul>
 					</div>
 					<div class="form__input d-flex align-center justify-center">
@@ -272,7 +317,27 @@
 						>
 						</v-combobox>
 					</div>
-					<v-btn class="green white--text" @click="submitUpdateProduct">
+					<!-- Add Image Button -->
+					<v-btn
+						class="blue white--text my-2 align-self-start"
+						@click="onAddImage"
+					>
+						Add Product Image
+					</v-btn>
+					<!-- Hidden File Input -->
+					<input
+						type="file"
+						@change="onUploadImage"
+						style="display: none"
+						ref="uploadFile"
+						multiple
+						accept=".jpg, .jpeg, .png"
+					/>
+
+					<v-btn
+						class="green white--text"
+						@click="submitUpdateProduct"
+					>
 						Update Product
 					</v-btn>
 				</v-form>
@@ -316,7 +381,7 @@
 		</v-dialog>
 
 		<!-- Data Table -->
-		<v-card width="1200" >
+		<v-card width="1200">
 			<v-card-title>
 				<v-text-field
 					v-model="search"
@@ -340,12 +405,24 @@
 				</template>
 
 				<template v-slot:item.image="{ item }">
-						<v-icon color="green darken-4" v-if="item.image !== null" @click="logger(item)" >mdi-checkbox-marked-circle</v-icon>
-						<v-icon color="red" v-else >mdi-alert-circle</v-icon>
+					<v-icon
+						color="green darken-4"
+						v-if="item.image !== null"
+						@click="logger(item)"
+						>mdi-checkbox-marked-circle</v-icon
+					>
+					<v-icon color="red" v-else>mdi-alert-circle</v-icon>
 				</template>
 
 				<template v-slot:item.actions="{ item }">
-					<v-icon small class="mr-2" @click="onEditProduct(item); editProductDialog = !editProductDialog">
+					<v-icon
+						small
+						class="mr-2"
+						@click="
+							onEditProduct(item);
+							editProductDialog = !editProductDialog;
+						"
+					>
 						mdi-pencil
 					</v-icon>
 					<v-icon
@@ -357,14 +434,7 @@
 					>
 						mdi-delete
 					</v-icon>
-					<input
-						type="file"
-						@change="onUploadImage"
-						style="display: none"
-						ref="uploadFile"
-						multiple
-						accept=".jpg, .jpeg, .png"
-					/>
+					
 				</template>
 			</v-data-table>
 		</v-card>
@@ -418,30 +488,29 @@ export default {
 		editProductDialog: false,
 
 		currentProduct: null,
-
 	}),
 
 	methods: {
 		changeTagList() {
 			switch (this.addProductData.category) {
-				case 'Keyboard':
-					this.suggestTag = keyboardTag
+				case "Keyboard":
+					this.suggestTag = keyboardTag;
 					break;
-				case 'Switch':
-					this.suggestTag = switchTag
+				case "Switch":
+					this.suggestTag = switchTag;
 					break;
-				case 'Keycap':
-					this.suggestTag = keycapTag
+				case "Keycap":
+					this.suggestTag = keycapTag;
 					break;
-				case 'Tools':
-					this.suggestTag = toolsTag
+				case "Tools":
+					this.suggestTag = toolsTag;
 					break;
-				case 'Accessories':
-					this.suggestTag = accessoriesTag
+				case "Accessories":
+					this.suggestTag = accessoriesTag;
 					break;
-				default: 
+				default:
 			}
-			console.log(this.suggestTag)
+			console.log(this.suggestTag);
 		},
 		getQuantityColor(itemAmount) {
 			if (itemAmount === 0) {
@@ -461,8 +530,8 @@ export default {
 		onEditProduct(item) {
 			let id = item.id;
 			axios.get(`/product/${id}`).then((res) => {
-				let product = res.data
-				this.editProductData = product
+				let product = res.data;
+				this.editProductData = product;
 			});
 		},
 
@@ -472,7 +541,7 @@ export default {
 		},
 
 		deleteProduct() {
-			this.$store.dispatch('deleteProduct', this.currentProduct.id)
+			this.$store.dispatch("deleteProduct", this.currentProduct.id);
 		},
 		// logger(item){
 		// 	console.log(item)
@@ -508,7 +577,7 @@ export default {
 				name: "",
 				list: "",
 				priceAdded: "",
-			}
+			};
 		},
 		addEditOption() {
 			let name = this.option.name;
@@ -526,12 +595,12 @@ export default {
 				name: "",
 				list: "",
 				priceAdded: "",
-			}
+			};
 		},
 		addTag() {
 			if (this.tag !== "") {
 				this.addProductData.tag.push(this.tag);
-				console.log(this.addProductData)
+				console.log(this.addProductData);
 				this.tag = "";
 			}
 		},
@@ -543,7 +612,7 @@ export default {
 				quantity: Number(this.addProductData.quantity),
 			};
 			console.log(formData);
-			// this.$store.dispatch("addProduct", formData);
+			this.$store.dispatch("addProduct", formData);
 			this.addProductDialog = false;
 		},
 		submitUpdateProduct() {
@@ -554,8 +623,7 @@ export default {
 			};
 			console.log(formData);
 			this.addProductDialog = false;
-
-		}
+		},
 	},
 
 	computed: {
@@ -567,7 +635,7 @@ export default {
 					name: data.name,
 					price: data.price,
 					quantity: data.quantity,
-					image: data.image
+					image: data.image,
 				};
 			});
 			console.log(data);

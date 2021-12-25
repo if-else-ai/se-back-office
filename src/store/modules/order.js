@@ -20,9 +20,10 @@ const actions = {
 			commit("setOrder", res.data);
 		});
 	},
-	updateOrder({ commit }, updateDate) {
+	updateOrder({ commit, dispatch }, updateDate) {
 		axios.put("/order", {...updateDate}).then((res) => {
             alert('Update Order Successfully')
+			dispatch('getOrder')
 		}).catch(err => {
             alert('Fail to Update Order')
         })
