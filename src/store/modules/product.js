@@ -22,8 +22,14 @@ const actions = {
 	},
 	addProduct({ commit, dispatch }, productData) {
 		// console.log({...productData})
-		axios.post("/product", { ...productData }).then((res) => {
+		axios.post("/product", { ...productData.formData }).then((res) => {
 			alert('Add Product Successfully')
+			if(productData.image){
+				productData.image.append("productId", res.data.id);
+				axios.post("/image", productData.image).then((res) => {
+					dispatch('getProducts')
+				});
+			}
 			dispatch('getProducts')
 		});
 	},
@@ -43,7 +49,6 @@ const actions = {
 	},
 
 	deleteProduct({ commit, dispatch }, productId) {
-		console.log(productId)
 		axios.delete(`/product/${productId}`).then((res) => {
 			alert('Delete Product Successfully')
 			dispatch('getProducts')

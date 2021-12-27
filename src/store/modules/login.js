@@ -1,6 +1,5 @@
-import axios from "../../axios-auth";
+import axios from "../../api/axios-auth";
 import router from "../../router/index";
-import userRole from "../../assets/user-role.js"
 
 const state = {
 	idToken: null,
@@ -21,8 +20,6 @@ const mutations = {
 	// Clear token
 	clearAuthData(state) {
 		state.idToken = null;
-		state.userRole = null;
-		// state.userId = null
 	},
 	setUserRole(state, role) {
 		state.userRole = role
@@ -39,44 +36,44 @@ const actions = {
 	},
 
 	// admin login
-	// login({ commit, dispatch }, authData) {
-	// 	axios
-	// 		.post("/api/login", {
-	// 			email: authData.email,
-	// 			password: authData.password,
-	// 		})
-	// 		// Store Token on local storage for auto login
-	// 		.then((res) => {
-	// 			res.data.expiresIn = 3600;
-	// 			commit("authUser", {
-	// 				token: res.data.token,
-	// 				// userId: res.data.localId
-	// 			});
-	// 			const now = new Date();
-	// 			const expirationDate = new Date(
-	// 				now.getTime() + res.data.expiresIn * 1000
-	// 			);
-	// 			axios
-	// 				.get("api/admin-role", { headers: {
-    //                     'Authorization' : 'Bearer ' + res.data.token
-    //                 }})
-    //                 .then((response) => {
-	// 					let data = response.data
-	// 					let role = userRole[data.role]
-	// 					commit('setUserRole', role)
-	// 					localStorage.setItem("userRole", role);
-    //                 })
-	// 			localStorage.setItem("token", res.data.token);
-	// 			// localStorage.setItem('userId', res.data.localId)
-	// 			localStorage.setItem("expirationDate", expirationDate);
-	// 			dispatch("storeUser", authData);
-	// 			dispatch("setLogoutTimer", res.data.expiresIn);
-	// 			router.replace("/home");
-	// 		})
-	// 		.catch((error) => {
-	// 			alert("เกิดข้อผิดพลาด");
-	// 		});
-	// },
+	login({ commit, dispatch }, authData) {
+		axios
+			.post("/api/login", {
+				email: authData.email,
+				password: authData.password,
+			})
+			// Store Token on local storage for auto login
+			.then((res) => {
+				res.data.expiresIn = 3600;
+				commit("authUser", {
+					token: res.data.token,
+					// userId: res.data.localId
+				});
+				const now = new Date();
+				const expirationDate = new Date(
+					now.getTime() + res.data.expiresIn * 1000
+				);
+				axios
+					.get("api/admin-role", { headers: {
+                        'Authorization' : 'Bearer ' + res.data.token
+                    }})
+                    .then((response) => {
+						let data = response.data
+						let role = userRole[data.role]
+						commit('setUserRole', role)
+						localStorage.setItem("userRole", role);
+                    })
+				localStorage.setItem("token", res.data.token);
+				// localStorage.setItem('userId', res.data.localId)
+				localStorage.setItem("expirationDate", expirationDate);
+				dispatch("storeUser", authData);
+				dispatch("setLogoutTimer", res.data.expiresIn);
+				router.replace("/home");
+			})
+			.catch((error) => {
+				alert("เกิดข้อผิดพลาด");
+			});
+	},
 
     login({ commit, dispatch }, authData) {
         commit("authUser", {
