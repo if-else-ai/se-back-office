@@ -35,7 +35,6 @@
 
 .nav-logo__container a h1:first-letter {
 	font-style: italic;
-	
 }
 
 
@@ -66,17 +65,6 @@
 
 .menu-link{
 	cursor: pointer;
-}
-
-li.logout-button {
-	cursor: pointer;
-	transition: all 0.4s;
-}
-
-li.logout-button:hover {
-	color: rgb(151, 151, 151) !important;
-	cursor: pointer;
-	transition: background-color 0.4s ease-out, color 0.3s ease-out;
 }
 
 .menu-link:hover{
@@ -139,8 +127,6 @@ li.logout-button:hover {
 		font-weight: bold;
 		border-radius: 0;
 	}
-
-	
 
 	.navbar-logo {
 		position: absolute;

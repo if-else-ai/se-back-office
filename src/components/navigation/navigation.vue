@@ -5,24 +5,19 @@
 			<!-- Path Navigation -->
 			<div class="nav-menu__container">
 				<ul class="nav-menu">
-					<a class="nav-links mr-4" href="/dashboard">
+					<a class="nal-links mr-4" href="/dashboard">
 						Dashboard
 					</a>
-					<a class="nav-links mr-6" href="/product">
+					<a class="nal-links mr-6" href="/product">
 						Product
 					</a>
-					<a class="nav-links mr-4" href="/user">
+					<a class="nal-links mr-4" href="/user">
 						User
 					</a>
-					<a class="nav-links mr-4" href="/order">
+					<a class="nal-links mr-4" href="/order">
 						Order
 					</a>
-					<v-divider color="white" vertical />
-					<li class="logout-button white--text ml-4" @click="onLogout">
-						Logout
-					</li>
 				</ul>
-				
 			</div>
 
 			<!-- Website Logo -->
@@ -63,7 +58,6 @@ export default {
 		toProfile(){
 			this.$router.push('profile')
 		},
-
 		toProductCart(){
 			this.$router.push('cart')
 		},

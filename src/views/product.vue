@@ -35,7 +35,7 @@
 							label="Category"
 							v-model="addProductData.category"
 							:items="categoryList"
-							@change="changeSuggestTag"
+							@change="changeTagList"
 						>
 						</v-combobox>
 					</div>
@@ -160,28 +160,7 @@
 						>
 						</v-combobox>
 					</div>
-					<v-btn
-						class="blue white--text my-2 align-self-start"
-						@click="onAddImage"
-					>
-						Add Product Image
-					</v-btn>
-					
-					<input
-						type="file"
-						@change="onAddUploadImage"
-						style="display: none"
-						ref="addUploadFile"
-						multiple
-						accept=".jpg, .jpeg, .png"
-					/>
-					<ul class="ml-4 mb-4" v-if="fileName.length > 0">
-						File Added:
-						<li v-for="(fileName, index) in fileName" :key="index">
-							{{ fileName }}
-						</li>
-					</ul>
-					<v-btn class="green white--text" @click="submitAddProduct">
+					<v-btn class="green white--text" @click="submitProduct">
 						Add Product
 					</v-btn>
 				</v-form>
@@ -213,7 +192,7 @@
 							hint="Keyboard"
 							v-model="editProductData.category"
 							:items="categoryList"
-							@change="changeSuggestTag"
+							@change="changeTagList"
 						>
 						</v-combobox>
 					</div>
@@ -341,17 +320,10 @@
 					<!-- Add Image Button -->
 					<v-btn
 						class="blue white--text my-2 align-self-start"
-						@click="onEditImage"
+						@click="onAddImage"
 					>
 						Add Product Image
 					</v-btn>
-
-					<ul class="ml-4 mb-4" v-if="fileName.length > 0">
-						File Added:
-						<li v-for="(fileName, index) in fileName" :key="index">
-							{{ fileName }}
-						</li>
-					</ul>
 					<!-- Hidden File Input -->
 					<input
 						type="file"
@@ -500,29 +472,26 @@ export default {
 			list: "",
 			priceAdded: "",
 		},
-
 		addProductDialog: false,
+		removeProductDialog: false,
+
 		addProductData: {
 			name: "",
 			category: "",
 			price: "",
-			description: "",             
+			description: "",
 			quantity: "",
 			option: [],
 			tag: [],
 		},
-		addImageFile: null,
-		fileName: [],
-
 		editProductData: null,
 		editProductDialog: false,
 
-		removeProductDialog: false,
 		currentProduct: null,
 	}),
 
 	methods: {
-		changeSuggestTag() {
+		changeTagList() {
 			switch (this.addProductData.category) {
 				case "Keyboard":
 					this.suggestTag = keyboardTag;
@@ -541,8 +510,8 @@ export default {
 					break;
 				default:
 			}
+			console.log(this.suggestTag);
 		},
-
 		getQuantityColor(itemAmount) {
 			if (itemAmount === 0) {
 				return "red";
@@ -554,7 +523,7 @@ export default {
 		},
 
 		onAddImage(item) {
-			this.$refs.addUploadFile.click();
+			this.$refs.uploadFile.click();
 			this.currentProduct = item;
 		},
 
@@ -566,42 +535,30 @@ export default {
 			});
 		},
 
-		onEditImage(item) {
-			this.$refs.uploadFile.click();
-			this.currentProduct = item;
-		},
-
 		onDeleteItem(item) {
 			this.currentProduct = item;
+			console.log(this.currentProduct);
 		},
 
 		deleteProduct() {
 			this.$store.dispatch("deleteProduct", this.currentProduct.id);
 		},
-
+		// logger(item){
+		// 	console.log(item)
+		// },
 
 		onUploadImage(event) {
 			const files = event.target.files;
+			console.log(files);
+			console.log(this.currentProduct);
 			let formData = new FormData();
 			for (let i = 0; i < files.length; i++) {
 				let file = files[i];
 				let tempBlob = new Blob([file], { type: "image/jpg" });
 				formData.append("image", tempBlob, files[i].name);
 			}
-			formData.append("productId", this.editProductData.id);
+			formData.append("productId", this.currentProduct.id);
 			this.$store.dispatch("uploadProductImage", { formData: formData });
-		},
-
-		onAddUploadImage(event) {
-			const files = event.target.files;
-			let formData = new FormData();
-			for (let i = 0; i < files.length; i++) {
-				let file = files[i];
-				this.fileName.push(file.name)
-				let tempBlob = new Blob([file], { type: "image/jpg" });
-				formData.append("image", tempBlob, files[i].name);
-			}
-			this.addImageFile = formData
 		},
 
 		addOption() {
@@ -643,22 +600,19 @@ export default {
 		addTag() {
 			if (this.tag !== "") {
 				this.addProductData.tag.push(this.tag);
+				console.log(this.addProductData);
 				this.tag = "";
 			}
 		},
 
-		submitAddProduct() {
+		submitProduct() {
 			let formData = {
 				...this.addProductData,
 				price: Number(this.addProductData.price),
 				quantity: Number(this.addProductData.quantity),
 			};
-			if(this.addImageFile){
-				this.$store.dispatch("addProduct", { formData: formData, image: this.addImageFile });
-			} else {
-				this.$store.dispatch("addProduct", { formData: formData });
-			}
-			this.fileName = []
+			console.log(formData);
+			this.$store.dispatch("addProduct", formData);
 			this.addProductDialog = false;
 		},
 		submitUpdateProduct() {
@@ -667,7 +621,7 @@ export default {
 				price: Number(this.editProductData.price),
 				quantity: Number(this.editProductData.quantity),
 			};
-			this.fileName = []
+			console.log(formData);
 			this.addProductDialog = false;
 		},
 	},
@@ -684,6 +638,7 @@ export default {
 					image: data.image,
 				};
 			});
+			console.log(data);
 			return data;
 		},
 	},
@@ -695,6 +650,6 @@ export default {
 	margin-right: 16px;
 }
 .page-container {
-	padding: 0 300px;
+	padding: 0 400px;
 }
 </style>
