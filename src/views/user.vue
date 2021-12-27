@@ -205,7 +205,6 @@ export default {
 	computed: {
 		user() {
 			let data = this.$store.getters.user;
-			console.log(data);
 			data = data.map((data) => {
 				return {
 					id: data.id,
@@ -214,8 +213,6 @@ export default {
 					gender: data.gender,
 				};
 			});
-			console.log(data);
-			// console.log(data)
 			return data;
 		},
 	},

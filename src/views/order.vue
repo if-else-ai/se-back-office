@@ -5,8 +5,8 @@
 		<h1 class="my-6">Order</h1>
 		
 		<!-- Edit / Update Order Dialog -->
-		<v-dialog v-model="editOrderDialog" width="600">
-			<v-card v-if="orderData">
+		<v-dialog v-model="updateOrderDialog" width="600">
+			<v-card v-if="updateOrderData">
 				<v-toolbar dark color="primary">
 					<v-toolbar-title>Update Order </v-toolbar-title>
 				</v-toolbar>
@@ -16,7 +16,7 @@
 						<v-text-field
 							label="name"
 							hint="Keychron Q1"
-							v-model="orderData.id"
+							v-model="updateOrderData.id"
 						>
 						</v-text-field>
 					</div>
@@ -29,13 +29,23 @@
 						>
 						</v-combobox>
 					</div>
-					<div v-if="selectedStatus === 'Shipping'" class="form__input d-flex align-center justify-center">
+					<div v-if="selectedStatus === 'Shipping' && selectedShipStatus === 'Init'" class="form__input d-flex align-center justify-center">
 						<h4>Tracking Number</h4>
 						<v-text-field
 							label="Tracking NO."
 							v-model="trackingNumber"
 						>
 						</v-text-field>
+					</div>
+					<div v-if="selectedStatus === 'Shipping'" class="form__input d-flex align-center justify-center">
+						<h4>Shipping Status</h4>
+						<v-combobox
+							label="ShipStatus"
+							v-model="selectedShipStatus"
+							:items="shipStatus"
+							:disabled="isNotInit"
+						>
+						</v-combobox>
 					</div>
 					<v-btn class="green white--text" @click="updateOrder">
 						Update
@@ -114,8 +124,8 @@
 					<v-btn
 						depressed
 						@click="
-							editOrderDialog = true;
-							onEditOrder(item);
+							updateOrderDialog = true;
+							onUpdateOrder(item);
 						"
 						class="mx-2"
 					>
@@ -149,28 +159,75 @@ export default {
 			{ text: "Status", value: "status" },
 			{ text: "Name", value: "userName" },
 			{ text: "Email", value: "userEmail" },
+			{ text: "Order Date", value: "createDate" },
 			{ text: "TrackingNumber", value: "trackingNumber" },
 			{ text: "Actions", value: "actions", sortable: false },
 		],
 		search: "",
-		editOrderDialog: false,
-		orderData: {},
+		updateOrderDialog: false,
+		updateOrderData: {},
 		orderStatus: ["Paid", "Shipping", "Completed", "Cancelled"],
+		shipStatus: ["Init", "Sended", "Shipping", "Completed"],
 		selectedStatus: "",
 		trackingNumber: "",
 		deleteOrderDialog: false,
+		isNotInit: null,
 		currentOrder: null,
+		selectedShipStatus: '',
 	}),
 
+
 	methods: {
-		onEditOrder(item) {
-			this.orderData = item;
-			if(this.orderData.status === 'Shipping' || this.orderData.status === 'Paid'){
+		onUpdateOrder(item) {
+			this.updateOrderData = item;
+
+			switch(this.updateOrderData.status){
+				case 'Paid':
+					this.orderStatus =  ["Shipping", "Completed", "Cancelled"]
+				break;
+				case 'Shipping':
+					this.orderStatus =  ["Shipping", "Completed", "Cancelled"]
+				break;
+				case 'Paid':
+					this.orderStatus =  ["Shipping"]
+				break;
+				case 'Completed':
+					this.orderStatus =  ["Completed"]
+				break;
+				default:
+			}
+
+			switch(this.updateOrderData.shipStatus){
+				case 'Init':
+					this.shipStatus =  ["Sended", "Shipping", "Completed"]
+				break;
+				case 'Sended':
+					this.shipStatus =  ["Shipping", "Completed"]
+				break;
+				case 'Shipping':
+					this.shipStatus =  ["Completed"]
+				break;
+				case 'Completed':
+					this.shipStatus =  ["Completed"]
+				break;
+				default:
+			}
+
+			if(this.updateOrderData.status === 'Shipping' || this.updateOrderData.status === 'Paid'){
 				this.selectedStatus = 'Shipping'
 			} else {
-				this.selectedStatus = this.orderData.status
+				this.selectedStatus = this.updateOrderData.status
 			}
-			this.trackingNumber = this.orderData.trackingNumber
+
+			if(this.updateOrderData.shipStatus === ''){
+				console.log('not Init')
+				this.isNotInit = true
+				this.selectedShipStatus = 'Init'
+			} else {
+				this.isNotInit = false
+			}
+			console.log(1,this.updateOrderData)
+			this.trackingNumber = this.updateOrderData.trackingNumber
 		},
 
 		getTrackingColor(TrackingNumber) {
@@ -197,6 +254,12 @@ export default {
 			}
 		},
 
+		getDate(text) {
+			let date = text.substring(0, 10);
+			let time = text.substring(11, 19);
+			return `${date} ${time}`;
+		},
+
 		onDeleteItem(item) {
 			let orderId = item.id
 			this.currentOrder = item
@@ -204,21 +267,33 @@ export default {
 		},
 		updateOrder() {
 			let formData = {
-				id: this.orderData.id,
+				id: this.updateOrderData.id,
 				status: this.selectedStatus,
+				shipStatus: this.selectedShipStatus
 			};
+
+			
 
 			if (formData.status === "Shipping") {
 				console.log(this.trackingNumber)
-				if(this.trackingNumber === ""){
+				if(this.trackingNumber === "" && this.updateOrderData.shipStatus === ''){
 					alert("Require Tracking Number")
 					return
 				}
 				formData.trackingNumber = this.trackingNumber;
 			}
 
+			if (formData.status === "Completed" || formData.shipStatus === "Completed") {
+				formData.shipStatus = 'Completed'
+				formData.status = 'Completed'
+			}
+
+			
+
+			console.log(formData)
 			this.$store.dispatch("updateOrder", formData);
 			this.trackingNumber = ''
+			this.updateOrderDialog = false
 		},
 
 		deleteOrder() {
@@ -235,7 +310,9 @@ export default {
 					status: data.status,
 					userName: data.userDetail.name,
 					userEmail: data.userDetail.email,
+					createDate: `${this.getDate(data.createDate)}`,
 					trackingNumber: data.trackingNumber,
+					shipStatus: data.shipStatus
 				};
 			});
 			console.log(data);
