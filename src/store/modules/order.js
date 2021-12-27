@@ -36,7 +36,6 @@ const actions = {
 			})
 			.then((res) => {
 				commit('setRequestedOrder', res.data)
-				console.log(res.data)
 			});
 	},
 	updateOrder({ commit, dispatch }, updateDate) {

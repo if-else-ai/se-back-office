@@ -7,7 +7,6 @@
 			ref="menu"
 			v-model="menu"
 			:close-on-content-click="false"
-			:return-value.sync="dates"
 			transition="scale-transition"
 			offset-y
 			min-width="auto"
@@ -33,16 +32,19 @@
 			</v-btn>
 		</div>
 
-		<v-card class="order-detail__sum d-flex my-4" flat width="1200" v-if="requestedOrder">
+		<v-card
+			class="order-detail__sum d-flex my-4"
+			flat
+			width="1200"
+			v-if="requestedOrder.length > 0"
+		>
 			<h2 class="align-self-start">
-				Income: {{ totalIncome.toFixed(2) }}
+				Income: {{ totalIncome.toFixed(2) }} ฿
 			</h2>
-			<h2 class="align-self-start ml-4">
-				TotalOrder: {{ totalOrders }}
-			</h2>
+			<h2 class="align-self-start ml-4">TotalOrder: {{ totalOrders }}</h2>
 		</v-card>
 
-		<v-card width="1200" v-if="requestedOrder">
+		<v-card width="1200" v-if="requestedOrder.length > 0">
 			<v-card-title>
 				<v-text-field
 					v-model="search"
@@ -59,18 +61,16 @@
 				:search="search"
 				class="elevation-1"
 			>
-			<template v-slot:item.status="{ item }">
+				<template v-slot:item.status="{ item }">
 					<v-chip color="green darken-4" dark>
-						{{
-							item.status
-						}}
+						{{ item.status }}
 					</v-chip>
 				</template>
 			</v-data-table>
 		</v-card>
-
-		
-
+		<v-card v-else class="align-self-start" flat >
+			<h2> Order Not Found </h2>
+		</v-card>
 	</v-container>
 </template>
 
@@ -109,7 +109,6 @@ export default {
 		},
 
 		getDate(text) {
-			console.log(text);
 			let date = text.substring(0, 10);
 			let time = text.substring(11, 19);
 			return `${date} ${time}`;
@@ -123,14 +122,10 @@ export default {
 
 		requestedOrder() {
 			let data = this.$store.getters.requestedOrder;
-			console.log(data.orders);
-			this.totalOrders = data.totalOrders
-			this.totalIncome = data.totalPrice
-			console.log(this.totalOrders)
-			console.log(this.totalIncome)
+			this.totalOrders = data.totalOrders;
+			this.totalIncome = data.totalPrice;
 			if (data.orders) {
 				data = data.orders.map((item) => {
-					console.log(item);
 					return {
 						id: item.id,
 						status: item.status,
@@ -150,7 +145,7 @@ export default {
 </script>
 
 <style scoped>
-.order-detail__sum h2{
+.order-detail__sum h2 {
 	font-weight: 500;
 }
 .page-container {
