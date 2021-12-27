@@ -315,7 +315,6 @@ export default {
 					shipStatus: data.shipStatus
 				};
 			});
-			console.log(data);
 			return data;
 		},
 	},

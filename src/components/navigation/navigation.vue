@@ -5,18 +5,18 @@
 			<!-- Path Navigation -->
 			<div class="nav-menu__container">
 				<ul class="nav-menu">
-					<a class="nav-links mr-4" href="/dashboard">
+					<router-link class="nav-links mr-4" to="/dashboard">
 						Dashboard
-					</a>
-					<a class="nav-links mr-6" href="/product">
+					</router-link>
+					<router-link class="nav-links mr-6" to="/product">
 						Product
-					</a>
-					<a class="nav-links mr-4" href="/user">
+					</router-link>
+					<router-link class="nav-links mr-4" to="/user">
 						User
-					</a>
-					<a class="nav-links mr-4" href="/order">
+					</router-link>
+					<router-link class="nav-links mr-4" to="/order">
 						Order
-					</a>
+					</router-link>
 					<v-divider color="white" vertical />
 					<li class="logout-button white--text ml-4" @click="onLogout">
 						Logout
