@@ -16,7 +16,7 @@
 				<v-text-field
 					class="align-self-start"
 					v-model="dateRangeText"
-					label="Order Data Range"
+					label="ค้นหา Order"
 					prepend-icon="mdi-calendar"
 					readonly
 					v-bind="attrs"
@@ -33,7 +33,7 @@
 			</v-btn>
 		</div>
 
-		<v-card class="d-flex  my-4" flat width="1200" v-if="requestedOrder">
+		<v-card class="order-detail__sum d-flex my-4" flat width="1200" v-if="requestedOrder">
 			<h2 class="align-self-start">
 				Income: {{ totalIncome.toFixed(2) }}
 			</h2>
@@ -43,15 +43,15 @@
 		</v-card>
 
 		<v-card width="1200" v-if="requestedOrder">
-			<!-- <v-card-title>
+			<v-card-title>
 				<v-text-field
 					v-model="search"
 					append-icon="mdi-magnify"
-					label="Search id, email, name, etc."
+					label="Search order id, date, name, etc."
 					single-line
 					hide-details
 				></v-text-field>
-			</v-card-title> -->
+			</v-card-title>
 			<v-data-table
 				:headers="headers"
 				:items="requestedOrder"
@@ -59,6 +59,13 @@
 				:search="search"
 				class="elevation-1"
 			>
+			<template v-slot:item.status="{ item }">
+					<v-chip color="green darken-4" dark>
+						{{
+							item.status
+						}}
+					</v-chip>
+				</template>
 			</v-data-table>
 		</v-card>
 
@@ -143,6 +150,9 @@ export default {
 </script>
 
 <style scoped>
+.order-detail__sum h2{
+	font-weight: 500;
+}
 .page-container {
 	padding: 0 300px;
 }
