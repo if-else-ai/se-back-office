@@ -182,14 +182,20 @@ export default {
 			this.updateOrderData = item;
 
 			switch(this.updateOrderData.status){
-				case 'Paid':
-					this.orderStatus =  ["Shipping", "Completed", "Cancelled"]
+				case 'Cancelled':
+					this.orderStatus =  ["Cancelled"]
 				break;
-				case 'Shipping':
-					this.orderStatus =  ["Shipping", "Completed", "Cancelled"]
+				case 'Pending':
+					this.orderStatus =  ["Cancelled"]
 				break;
 				case 'Paid':
 					this.orderStatus =  ["Shipping"]
+				break;
+				case 'Shipping':
+					this.orderStatus =  ["Shipping", "Completed"]
+				break;
+				case 'Cancelled':
+					this.orderStatus =  []
 				break;
 				case 'Completed':
 					this.orderStatus =  ["Completed"]
@@ -199,16 +205,16 @@ export default {
 
 			switch(this.updateOrderData.shipStatus){
 				case 'Init':
-					this.shipStatus =  ["Sended", "Shipping", "Completed"]
+					this.shipStatus =  ["Sended"]
 				break;
 				case 'Sended':
-					this.shipStatus =  ["Shipping", "Completed"]
+					this.shipStatus =  ["Shipping"]
 				break;
 				case 'Shipping':
 					this.shipStatus =  ["Completed"]
 				break;
 				case 'Completed':
-					this.shipStatus =  ["Completed"]
+					this.shipStatus =  []
 				break;
 				default:
 			}
@@ -226,6 +232,8 @@ export default {
 			} else {
 				this.isNotInit = false
 			}
+
+			
 			console.log(1,this.updateOrderData)
 			this.trackingNumber = this.updateOrderData.trackingNumber
 		},
@@ -266,13 +274,17 @@ export default {
 			console.log(orderId)
 		},
 		updateOrder() {
+			if(this.updateOrderData.status === 'Completed'){
+				alert('Order is already Completed')
+				this.updateOrderDialog = false
+				return
+			}
+			
 			let formData = {
 				id: this.updateOrderData.id,
 				status: this.selectedStatus,
 				shipStatus: this.selectedShipStatus
 			};
-
-			
 
 			if (formData.status === "Shipping") {
 				console.log(this.trackingNumber)

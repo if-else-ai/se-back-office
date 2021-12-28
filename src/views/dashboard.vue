@@ -26,12 +26,66 @@
 			</v-date-picker>
 		</v-menu>
 
+		<!-- Get Report Button -->
 		<div class="add-product__button my-4 align-self-start">
-			<v-btn color="green white--text">
+			<v-btn color="green white--text" @click="downloadPDF">
 				Get Report
 			</v-btn>
 		</div>
 
+		<!-- Popular Card -->
+		<v-card
+			class="align-self-start d-flex flex-column"
+			v-if="popularProduct"
+			outlined
+		>
+			<v-card-title>
+				<v-icon class="mr-2" color="black">mdi-star</v-icon> Most Popular Product: {{ popularProduct.name }}
+			</v-card-title>
+
+			<v-divider class="mb-2" />
+			<v-img
+				class="align-self-center mx-2 mb-2"
+				width="300"
+				height="200"
+				:src="popularProduct.image[0]"
+			/>
+			<v-divider class="mb-2" />
+			<strong class="pl-4 pb-2">
+				Sold Quantity : {{ popularProductBuyQuantity }} Unit <br />
+				Total: {{ popularTotalPriceSold.toFixed(2) }} ฿
+			</strong>
+		</v-card>
+
+		<!-- Product Summary -->
+		<h2 class="align-self-start mt-4" v-if="summaryProduct.length > 0"> Product Summary</h2>
+		<v-card class="my-4" width="1200" v-if="summaryProduct.length > 0">
+			<v-card-title>
+				<v-text-field
+					v-model="search2"
+					append-icon="mdi-magnify"
+					label="Search product id, name, etc."
+					single-line
+					hide-details
+				></v-text-field>
+			</v-card-title>
+			<v-data-table
+				:headers="sumProductHeader"
+				:items="summaryProduct"
+				:items-per-page="20"
+				:search="search"
+				class="elevation-1"
+			>
+			</v-data-table>
+		</v-card>
+
+		<!-- If Order Not Found -->
+		<v-card v-else class="align-self-start" flat>
+			<h2>Order Not Found</h2>
+		</v-card>
+
+		<!-- Order Summary -->
+		<h2 class="align-self-start mt-4"> Order Summary</h2>
 		<v-card
 			class="order-detail__sum d-flex my-4"
 			flat
@@ -55,7 +109,7 @@
 				></v-text-field>
 			</v-card-title>
 			<v-data-table
-				:headers="headers"
+				:headers="sumOrderHeader"
 				:items="requestedOrder"
 				:items-per-page="20"
 				:search="search"
@@ -68,13 +122,15 @@
 				</template>
 			</v-data-table>
 		</v-card>
-		<v-card v-else class="align-self-start" flat >
-			<h2> Order Not Found </h2>
+		<v-card v-else class="align-self-start" flat>
+			<h2>Order Not Found</h2>
 		</v-card>
 	</v-container>
 </template>
 
 <script>
+import jsPDF from "jspdf";
+
 export default {
 	data() {
 		return {
@@ -83,19 +139,32 @@ export default {
 			endDate: null,
 			menu: false,
 			search: "",
+			search2: "",
 
-			headers: [
+			sumOrderHeader: [
 				{ text: "Order ID", value: "id" },
 				{ text: "Status", value: "status" },
 				{ text: "Name", value: "userName" },
-				{ text: "Email", value: "userEmail" },
+				{ text: "Product", value: "product" },
 				{ text: "Order Date", value: "createDate" },
+				// { text: "TrackingNumber", value: "trackingNumber" },
+				// { text: "Actions", value: "actions", sortable: false },
+			],
+
+			sumProductHeader: [
+				{ text: "Product ID", value: "productId" },
+				{ text: "Name", value: "productName" },
+				{ text: "Price", value: "price" },
+				{ text: "Sold", value: "sold" },
+				{ text: "Total Price", value: "totalPrice" },
 				// { text: "TrackingNumber", value: "trackingNumber" },
 				// { text: "Actions", value: "actions", sortable: false },
 			],
 
 			totalOrder: 0,
 			totalIncome: 0,
+			popularProductBuyQuantity: 0,
+			popularTotalPriceSold: 0,
 		};
 	},
 
@@ -113,11 +182,161 @@ export default {
 			let time = text.substring(11, 19);
 			return `${date} ${time}`;
 		},
+
+		downloadPDF() {
+			let pdf = new jsPDF();
+
+			let requestOrder = this.$store.getters.requestedOrder;
+
+			let totalIncome = requestOrder.totalPrice;
+			let totalOrders = requestOrder.totalOrders;
+			let product = requestOrder.orders.map((item) => {
+				return {
+					product: item.detail.product,
+					totalPrice: item.detail.totalPrice,
+				};
+			});
+			let allProduct = [];
+			let productId = [];
+			product.forEach((item) => {
+				item.product.forEach((product) => {
+					if (productId.indexOf(product.productId) === -1) {
+						productId.push(product.productId);
+						allProduct.push(product);
+					}
+				});
+			});
+			// Count Product
+			let productName = [];
+			let productCount = [];
+			product.forEach((item) => {
+				item.product.forEach((product) => {
+					if (productName.indexOf(product.name) !== -1) {
+						productCount[productName.indexOf(product.name)] +=
+							product.quantity;
+					} else {
+						productCount[productName.length] = product.quantity;
+						productName.push(product.name);
+					}
+				});
+			});
+			let highestBuy = Math.max(...productCount);
+			let buyIndex = productCount.indexOf(highestBuy);
+			let popularProductName = productName[buyIndex];
+			let productObject = allProduct.find(
+				(product) => (product.name = popularProductName)
+			);
+
+			// pdf.text('Hello World', 10, 10)
+			// pdf.save('Order.pdf')
+		},
+		getProductName(products) {
+			products = products.map((product) => {
+				return product.name;
+			});
+
+			return products.join(", ");
+		},
 	},
 
 	computed: {
 		dateRangeText() {
 			return this.dates.join(" ~ ");
+		},
+
+		summaryProduct() {
+			let requestOrder = this.$store.getters.requestedOrder;
+			if(requestOrder.orders){
+				let product = requestOrder.orders.map((item) => {
+				return {
+					product: item.detail.product,
+					totalPrice: item.detail.totalPrice,
+				};
+			});
+
+			let productName = [];
+			let productCount = [];
+			let productMapId = [];
+			let productMapPrice = [];
+			product.forEach((item) => {
+				item.product.forEach((product) => {
+					if (productName.indexOf(product.name) !== -1) {
+						productCount[productName.indexOf(product.name)] +=
+							product.quantity;
+					} else {
+						productCount[productName.length] = product.quantity;
+						productName.push(product.name);
+						productMapId.push(product.productId);
+						productMapPrice.push(product.price);
+					}
+				});
+			});
+
+			let sumProduct = productName.map((product, index) => {
+				return {
+					productName: product,
+					price: productMapPrice[index],
+					productId: productMapId[index],
+					sold: productCount[index],
+					totalPrice: (productCount[index] * productCount[index]).toFixed(2),
+				};
+			});
+				return sumProduct;
+			}else {
+				return []
+			}
+		},
+
+		popularProduct() {
+			// find popular Product
+			let requestOrder = this.$store.getters.requestedOrder;
+			if (requestOrder.orders) {
+				let product = requestOrder.orders.map((item) => {
+					return {
+						product: item.detail.product,
+						totalPrice: item.detail.totalPrice,
+					};
+				});
+				let allProduct = [];
+				let productId = [];
+				product.forEach((item) => {
+					item.product.forEach((product) => {
+						if (productId.indexOf(product.productId) === -1) {
+							productId.push(product.productId);
+							allProduct.push(product);
+						}
+					});
+				});
+				// console.log(productId)
+				// Count Product
+				let productName = [];
+				let productCount = [];
+				product.forEach((item) => {
+					item.product.forEach((product) => {
+						if (productName.indexOf(product.name) !== -1) {
+							productCount[productName.indexOf(product.name)] +=
+								product.quantity;
+						} else {
+							productCount[productName.length] = product.quantity;
+							productName.push(product.name);
+						}
+					});
+				});
+				let highestBuy = Math.max(...productCount);
+				let buyIndex = productCount.indexOf(highestBuy);
+				let popularProductName = productName[buyIndex];
+
+				let productObject = allProduct.find(
+					(product) => (product.name = popularProductName)
+				);
+
+				this.popularProductBuyQuantity = highestBuy;
+				this.popularTotalPriceSold = highestBuy * productObject.price;
+
+				return productObject;
+			} else {
+				return null;
+			}
 		},
 
 		requestedOrder() {
@@ -134,6 +353,7 @@ export default {
 						createDate: this.getDate(item.createDate),
 						trackingNumber: item.trackingNumber,
 						shipStatus: item.shipStatus,
+						product: this.getProductName(item.detail.product),
 					};
 				});
 			}
