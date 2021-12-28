@@ -28,6 +28,25 @@ const actions = {
 			alert('Fail to Delete User')
 		})
 	},
+	updateUser({ commit, dispatch }, userData) {
+		axios
+			.put(`/users/${userData.id}`, {
+				name: userData.name,
+				email: userData.email,
+				telNo: userData.telNo,
+				address: userData.address,
+				dateOfBirth: userData.dateOfBirth,
+				gender: userData.gender,
+			})
+			.then((res) => {
+				alert("Update User Successfully");
+				dispatch('getUser')
+			})
+			.catch((err) => {
+				alert("fail store user");
+			});
+
+	},
 
 };
 

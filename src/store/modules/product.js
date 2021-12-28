@@ -56,6 +56,14 @@ const actions = {
 			alert('Fail to Delete Product')
 		})
 	},
+	updateProduct({ commit, dispatch }, product) {
+		axios.put(`/product/${product.id}`, product).then((res) => {
+			alert('Update Product Successfully')
+			dispatch('getProducts')
+		}).catch(err => {
+			alert('Fail to Update Product')
+		})
+	},
 	
 };
 

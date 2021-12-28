@@ -12,7 +12,7 @@
 				<v-form class="d-flex flex-column pa-6">
 					<div class="form__input d-flex align-center justify-center">
 						<h4>Name</h4>
-						<v-text-field label="Name" v-model="editUserData.name">
+						<v-text-field label="Name" v-model="editUserData.name" >
 						</v-text-field>
 					</div>
 					<div class="form__input d-flex align-center justify-center">
@@ -21,6 +21,7 @@
 							label="Category"
 							v-model="editUserData.gender"
 							:items="gender"
+							
 						>
 						</v-combobox>
 					</div>
@@ -29,6 +30,7 @@
 						<v-text-field
 							label="email"
 							v-model="editUserData.email"
+							
 						>
 						</v-text-field>
 					</div>
@@ -50,6 +52,7 @@
 									readonly
 									v-bind="attrs"
 									v-on="on"
+									
 								></v-text-field>
 							</template>
 							<v-date-picker
@@ -75,6 +78,7 @@
 							label="Tel"
 							hint="30"
 							v-model="editUserData.telNo"
+							
 						>
 						</v-text-field>
 					</div>
@@ -116,7 +120,7 @@
 			</v-card>
 		</v-dialog>
 
-		<v-card width="1200" >
+		<v-card width="1200">
 			<v-card-title>
 				<v-text-field
 					v-model="search"
@@ -169,6 +173,7 @@ export default {
 			{ text: "Gender", value: "gender" },
 			{ text: "Actions", value: "actions", sortable: false },
 		],
+		activePicker: null,
 		currentUser: null,
 		deleteUserDialog: null,
 		editUserDialog: false,
@@ -186,6 +191,7 @@ export default {
 
 	methods: {
 		onEditUser(item) {
+			console.log(item);
 			this.editUserData = item;
 		},
 		onDeleteUser(item) {
@@ -194,23 +200,32 @@ export default {
 		save(date) {
 			this.$refs.menu.save(date);
 		},
-		deleteUser(){
-			this.$store.dispatch('deleteUser', this.currentUser.id)
+		deleteUser() {
+			this.$store.dispatch("deleteUser", this.currentUser.id);
 		},
-		updateUser(){
-			
+		updateUser() {
+			this.editUserData.dateOfBirth = new Date(
+				this.editUserData.dateOfBirth
+			).toISOString();
+			console.log(this.editUserData);
+			this.editUserDialog = false;
+			this.$store.dispatch("updateUser", this.editUserData);
 		},
 	},
 
 	computed: {
 		user() {
 			let data = this.$store.getters.user;
+			console.log(data);
 			data = data.map((data) => {
 				return {
 					id: data.id,
 					name: data.name,
 					email: data.email,
 					gender: data.gender,
+					address: data.address,
+					dateOfBirth: data.dateOfBirth.substring(0, 10),
+					telNo: data.telNo,
 				};
 			});
 			return data;

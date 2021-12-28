@@ -669,6 +669,8 @@ export default {
 			};
 			this.fileName = []
 			this.addProductDialog = false;
+			this.$store.dispatch('updateProduct', formData)
+			this.editProductDialog = false;
 		},
 	},
 
