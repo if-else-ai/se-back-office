@@ -27,8 +27,8 @@
 		</v-menu>
 
 		<!-- Get Report Button -->
-		<div class="add-product__button my-4 align-self-start">
-			<v-btn color="green white--text" @click="downloadPDF">
+		<div class="add-product__button my-4 align-self-start" v-if="requestedOrder.length > 0">
+			<v-btn color="green white--text"  @click="downloadPDF">
 				Get Report
 			</v-btn>
 		</div>
@@ -40,7 +40,8 @@
 			outlined
 		>
 			<v-card-title>
-				<v-icon class="mr-2" color="black">mdi-star</v-icon> Most Popular Product: {{ popularProduct.name }}
+				<v-icon class="mr-2" color="black">mdi-star</v-icon> Most
+				Popular Product: {{ popularProduct.name }}
 			</v-card-title>
 
 			<v-divider class="mb-2" />
@@ -58,7 +59,9 @@
 		</v-card>
 
 		<!-- Product Summary -->
-		<h2 class="align-self-start mt-4" v-if="summaryProduct.length > 0"> Product Summary</h2>
+		<h2 class="align-self-start mt-4" v-if="summaryProduct.length > 0">
+			Product Summary
+		</h2>
 		<v-card class="my-4" width="1200" v-if="summaryProduct.length > 0">
 			<v-card-title>
 				<v-text-field
@@ -85,7 +88,7 @@
 		</v-card>
 
 		<!-- Order Summary -->
-		<h2 class="align-self-start mt-4"> Order Summary</h2>
+		<h2 class="align-self-start mt-4" v-if="requestedOrder.length > 0">Order Summary</h2>
 		<v-card
 			class="order-detail__sum d-flex my-4"
 			flat
@@ -122,14 +125,12 @@
 				</template>
 			</v-data-table>
 		</v-card>
-		<v-card v-else class="align-self-start" flat>
-			<h2>Order Not Found</h2>
-		</v-card>
 	</v-container>
 </template>
 
 <script>
 import jsPDF from "jspdf";
+import "jspdf-autotable";
 
 export default {
 	data() {
@@ -143,9 +144,8 @@ export default {
 
 			sumOrderHeader: [
 				{ text: "Order ID", value: "id" },
-				{ text: "Status", value: "status" },
-				{ text: "Name", value: "userName" },
 				{ text: "Product", value: "product" },
+				{ text: "Total Order Price", value: "totalPrice" },
 				{ text: "Order Date", value: "createDate" },
 				// { text: "TrackingNumber", value: "trackingNumber" },
 				// { text: "Actions", value: "actions", sortable: false },
@@ -184,52 +184,113 @@ export default {
 		},
 
 		downloadPDF() {
-			let pdf = new jsPDF();
+			let doc = new jsPDF();
 
-			let requestOrder = this.$store.getters.requestedOrder;
+			let sumProductHeader = this.sumProductHeader.map((item) => {
+				return item.text;
+			});
+			let sumOrderHeader = this.sumOrderHeader.map((item) => {
+				return item.text;
+			});
 
-			let totalIncome = requestOrder.totalPrice;
-			let totalOrders = requestOrder.totalOrders;
-			let product = requestOrder.orders.map((item) => {
-				return {
-					product: item.detail.product,
-					totalPrice: item.detail.totalPrice,
-				};
+			let productData = this.summaryProduct;
+			let productId = productData.map((item) => {
+				return item.productId;
 			});
-			let allProduct = [];
-			let productId = [];
-			product.forEach((item) => {
-				item.product.forEach((product) => {
-					if (productId.indexOf(product.productId) === -1) {
-						productId.push(product.productId);
-						allProduct.push(product);
-					}
-				});
+			let name = productData.map((item) => {
+				return item.productName;
 			});
-			// Count Product
-			let productName = [];
-			let productCount = [];
-			product.forEach((item) => {
-				item.product.forEach((product) => {
-					if (productName.indexOf(product.name) !== -1) {
-						productCount[productName.indexOf(product.name)] +=
-							product.quantity;
-					} else {
-						productCount[productName.length] = product.quantity;
-						productName.push(product.name);
-					}
-				});
+			let price = productData.map((item) => {
+				return item.price;
 			});
-			let highestBuy = Math.max(...productCount);
-			let buyIndex = productCount.indexOf(highestBuy);
-			let popularProductName = productName[buyIndex];
-			let productObject = allProduct.find(
-				(product) => (product.name = popularProductName)
-			);
+			let sold = productData.map((item) => {
+				return item.sold;
+			});
+			let totalPrice = productData.map((item) => {
+				return item.totalPrice;
+			});
 
-			// pdf.text('Hello World', 10, 10)
-			// pdf.save('Order.pdf')
+			let orderData = this.requestedOrder;
+
+			let orderId = orderData.map((item) => {
+				return item.id;
+			});
+
+			let totalOrderPrice = orderData.map((item) => {
+				return item.totalPrice
+			})
+			let product = orderData.map((item) => {
+				return item.product;
+			});
+			let orderDate = orderData.map((item) => {
+				return item.createDate;
+			});
+
+			let sumProductData = [];
+
+			productId.forEach((item, index) => {
+				sumProductData.push([
+					item,
+					name[index],
+					price[index].slice(0, price[index].length - 1),
+					sold[index],
+					totalPrice[index].slice(0, totalPrice[index].length - 1),
+				]);
+			});
+
+
+
+			let sumOrderData = [];
+			orderId.forEach((item, index) => {
+				sumOrderData.push([
+					item,
+					product[index],
+					totalOrderPrice[index].slice(0, totalOrderPrice[index].length - 1),
+					orderDate[index],
+				]);
+			});
+
+			var finalY = doc.lastAutoTable.finalY || 10
+			doc.setFontSize(18)
+ 			doc.text('Order Report', 90, finalY)
+
+			finalY += 10
+			doc.setFontSize(16)
+ 			doc.text('Product Summary', 14, finalY)
+			doc.setFontSize(12)
+			finalY += 10
+ 			doc.text(`Most Popular Product : ${this.popularProduct.name}`, 14, finalY)
+			finalY += 5
+ 			doc.text(`Sold Quantity : ${this.popularProductBuyQuantity} Unit`, 14, finalY)
+			finalY += 5
+ 			doc.text(`Total Price : ${this.popularTotalPriceSold} Baht`, 14, finalY)
+			finalY += 5
+			doc.autoTable({
+				startY: finalY,
+				head: [[...sumProductHeader]],
+				body: [...sumProductData],
+			});
+
+			finalY = doc.lastAutoTable.finalY
+
+			doc.setFontSize(16)
+			finalY += 10
+ 			doc.text('Order Summary', 14, finalY)
+			doc.setFontSize(12)
+			finalY += 10
+			doc.text(`Total Income : ${this.totalIncome} Baht`, 14, finalY)
+			finalY += 5
+			doc.text(`Total Order : ${this.totalOrders}`, 14, finalY)
+			finalY += 5
+			doc.autoTable({
+				startY: finalY,
+				head: [[...sumOrderHeader]],
+				body: [...sumOrderData],
+			});
+
+			doc.save("summary.pdf");
 		},
+
 		getProductName(products) {
 			products = products.map((product) => {
 				return product.name;
@@ -246,44 +307,46 @@ export default {
 
 		summaryProduct() {
 			let requestOrder = this.$store.getters.requestedOrder;
-			if(requestOrder.orders){
+			if (requestOrder.orders) {
 				let product = requestOrder.orders.map((item) => {
-				return {
-					product: item.detail.product,
-					totalPrice: item.detail.totalPrice,
-				};
-			});
-
-			let productName = [];
-			let productCount = [];
-			let productMapId = [];
-			let productMapPrice = [];
-			product.forEach((item) => {
-				item.product.forEach((product) => {
-					if (productName.indexOf(product.name) !== -1) {
-						productCount[productName.indexOf(product.name)] +=
-							product.quantity;
-					} else {
-						productCount[productName.length] = product.quantity;
-						productName.push(product.name);
-						productMapId.push(product.productId);
-						productMapPrice.push(product.price);
-					}
+					return {
+						product: item.detail.product,
+						totalPrice: item.detail.totalPrice,
+					};
 				});
-			});
 
-			let sumProduct = productName.map((product, index) => {
-				return {
-					productName: product,
-					price: productMapPrice[index],
-					productId: productMapId[index],
-					sold: productCount[index],
-					totalPrice: (productCount[index] * productCount[index]).toFixed(2),
-				};
-			});
+				let productName = [];
+				let productCount = [];
+				let productMapId = [];
+				let productMapPrice = [];
+				product.forEach((item) => {
+					item.product.forEach((product) => {
+						if (productName.indexOf(product.name) !== -1) {
+							productCount[productName.indexOf(product.name)] +=
+								product.quantity;
+						} else {
+							productCount[productName.length] = product.quantity;
+							productName.push(product.name);
+							productMapId.push(product.productId);
+							productMapPrice.push(product.price);
+						}
+					});
+				});
+
+				let sumProduct = productName.map((product, index) => {
+					return {
+						productName: product,
+						price: `${productMapPrice[index]} ฿`,
+						productId: productMapId[index],
+						sold: productCount[index],
+						totalPrice: `${(
+							productCount[index] * productMapPrice[index]
+						).toFixed(2)} ฿`,
+					};
+				});
 				return sumProduct;
-			}else {
-				return []
+			} else {
+				return [];
 			}
 		},
 
@@ -332,7 +395,6 @@ export default {
 
 				this.popularProductBuyQuantity = highestBuy;
 				this.popularTotalPriceSold = highestBuy * productObject.price;
-
 				return productObject;
 			} else {
 				return null;
@@ -345,6 +407,7 @@ export default {
 			this.totalIncome = data.totalPrice;
 			if (data.orders) {
 				data = data.orders.map((item) => {
+					console.log(item);
 					return {
 						id: item.id,
 						status: item.status,
@@ -354,9 +417,11 @@ export default {
 						trackingNumber: item.trackingNumber,
 						shipStatus: item.shipStatus,
 						product: this.getProductName(item.detail.product),
+						totalPrice: `${item.detail.totalPrice} ฿`,
 					};
 				});
 			}
+			console.log(data);
 
 			return data;
 		},
